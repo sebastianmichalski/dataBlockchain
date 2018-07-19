@@ -19,6 +19,7 @@
         <commons-crypto.version>1.0.0</commons-crypto.version>
         <mockito-all.version>1.10.19</mockito-all.version>
         <assertj-core.version>3.8.0</assertj-core.version>
+        <guava.version>20.0</guava.version>
     </properties>
 
     <groupId>com.findwise.blockchain</groupId>
@@ -84,6 +85,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,38 @@
+version: "2"
+
+services:
+  node:
+    build: ./node
+    volumes:
+    - ./files:/files:rw
+    ports:
+    - "9999:8080"
+    networks:
+      vpcbr:
+        ipv4_address: "10.5.0.2"
+
+  node2:
+    build: ./node
+    volumes:
+    - ./files2:/files:rw
+    ports:
+    - "7777:8080"
+    networks:
+      vpcbr:
+        ipv4_address: "10.5.0.3"
+
+  server:
+    build: ./server
+    ports:
+    - "8888:8080"
+    networks:
+     vpcbr:
+        ipv4_address: "10.5.0.5"
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 10.5.0.0/16
+        gateway: 10.5.0.1
