@@ -86,8 +86,8 @@ public class DataChain {
         }
     }
 
-    private void initBlockchain() throws IOException {
-        blockchain.add(new Block(new File(""), "0"));
+    private void initBlockchain() {
+        blockchain.add(new Block(new File(""), "0", 1));
         log.info("Blockchain initialized, genesis block mined!");
     }
 

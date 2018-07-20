@@ -25,13 +25,15 @@ public class Block {
     private long timeStamp;
     private int nonce;
     private String fileContent;
+    private Integer blockIndex;
 
-    Block(File file, String previousHash) {
+    Block(File file, String previousHash, Integer blockIndex) {
         this.file = file;
         this.previousHash = previousHash;
         this.timeStamp = Instant.now().toEpochMilli();
         this.hash = calculateHash();
         this.fileContent = encodeFileToBase64(this.file);
+        this.blockIndex = blockIndex;
         mineBlock();
     }
 

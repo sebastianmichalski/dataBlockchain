@@ -37,8 +37,10 @@ public class Miner {
                 String fileName = f.getFileName().toString();
                 log.info("File to be added: ", fileName);
                 try {
-                    Block block = new Block(f.toFile(), dataChain.getBlockchain().getLast().getHash());
+                    final Block lastBlock = dataChain.getBlockchain().getLast();
+                    Block block = new Block(f.toFile(), lastBlock.getHash(), lastBlock.getBlockIndex() + 1);
                     dataChain.getBlockchain().add(block);
+                    Files.delete(f);
                     final JSONArray nodes;
                     nodes = DataChain.getNodes(restTemplate);
                     for (int i = 0; i < nodes.length(); i++) {
@@ -46,11 +48,10 @@ public class Miner {
                         String nodeIp = "http://" + host;
                         if (!Inet4Address.getLocalHost().getHostAddress().equals(host)) {
                             sendBlock(block, nodeIp + DataChain.PORT);
-                            // TODO move file, to avoid adding it twice to blockchain
                         }
                     }
                 } catch (JSONException | URISyntaxException | IOException e) {
-                    log.error("Error during new block propagation");
+                    log.error("Error during new block propagation ", e);
                 }
             });
         }
