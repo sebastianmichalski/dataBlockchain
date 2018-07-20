@@ -6,7 +6,7 @@ where to get blockchain data and where to propagate freshly mined blocks. To get
 instead of `server` container.
 
 Technologies used during development:
-* Facebook4J
+* Docker along with docker-compose
 * Gson
 * Log4j
 * Spring Boot
