@@ -10,6 +10,8 @@ import static com.google.common.hash.Hashing.sha256;
 @Log4j2
 public class StringUtil {
 
+    public static final String BLOCKCHAIN_STORAGE = "/blockchain";
+
     private StringUtil() {
     }
 

@@ -1,8 +1,11 @@
 package com.findwise.blockchain;
 
 import com.findwise.exceptions.InvalidBlockchainException;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.http.HttpStatus;
@@ -19,11 +22,14 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.*;
 
+import static com.findwise.utils.StringUtil.BLOCKCHAIN_STORAGE;
+
 @Log4j2
 @Getter
 @Component
 public class DataChain {
 
+    private File storedBlockchain = new File(BLOCKCHAIN_STORAGE);
     public static final String PORT = ":8080";
     public static final String SERVER_IP = "http://10.5.0.5" + PORT;
     public static final int DIFFICULTY = 5;
@@ -40,7 +46,10 @@ public class DataChain {
             final JSONArray nodes = getNodes(restTemplate);
             if (Objects.requireNonNull(nodes).length() > 1) {
                 synchronizeBlockchain(restTemplate, nodes);
-            } else {
+            } else if(storedBlockchain.exists()){
+                restoreBlockchainFromFile();
+            }
+            else {
                 initBlockchain();
             }
         } catch (UnknownHostException e) {
@@ -54,6 +63,12 @@ public class DataChain {
         } catch (IOException e) {
             log.error("Fail to store file in blockchain: ", e);
         }
+    }
+
+    private void restoreBlockchainFromFile() throws IOException{
+        log.info("Restoring blockchain from storage");
+        blockchain = new Gson().fromJson(new String(FileUtils.readFileToByteArray(storedBlockchain)), new TypeToken<LinkedList<Block>>() {
+        }.getType());
     }
 
     static JSONArray getNodes(RestTemplate restTemplate) throws JSONException {
