@@ -109,3 +109,17 @@ docker-compose up --build -d node2
 If you call `10.5.0.3:8080` you should get exactly the same blockchain presented in json, because new node synchronized blockchain
 from yet existing node with the longes blockchain. Again, if you add some file to `files` or `files2` directory one of nodes will mine 
 new block with this file and propagate new block to another node.
+
+## Storing blockchain
+
+To store blockchain data on proper node call POST endpoint `/store` of this node, ie:
+
+```
+curl -X POST "http://10.5.0.3:8080/store"
+```
+
+To download file from blockchain by block index call GET endpoint `/restore` of this node in browser:
+
+```
+http://10.5.0.3:8080/restore?index=2
+```
